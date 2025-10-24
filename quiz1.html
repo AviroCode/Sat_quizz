@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAT Math Quiz: Chapters 1-6</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7f6;
+      color: #333;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      padding: 1.5em 0;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+
+    header p {
+      font-size: 1.1em;
+      margin-top: 0.5em;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2em auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      color: #2980b9;
+      border-bottom: 2px solid #ecf0f1;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      color: #34495e;
+      cursor: pointer;
+      background-color: #f9f9f9;
+      padding: 10px 15px;
+      border-left: 5px solid #3498db;
+      margin-top: 15px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    h3:hover {
+      background-color: #eaf1f7;
+    }
+
+    .concept-content {
+      display: none;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-top: none;
+      background-color: #fefefe;
+      border-radius: 0 0 4px 4px;
+      margin-bottom: 15px;
+    }
+
+    .concept-content ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    .concept-content li {
+      margin-bottom: 8px;
+    }
+
+    button {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      display: block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    button:hover {
+      background-color: #229954;
+    }
+
+    #quiz-session, #results-session {
+      margin-top: 30px;
+    }
+
+    #quiz-timer {
+      font-size: 1.2em;
+      color: #e74c3c;
+      font-weight: bold;
+      text-align: right;
+      margin-bottom: 15px;
+    }
+
+    .question-card {
+      background-color: #fefefe;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .question-card p.question-text {
+      font-size: 1.1em;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .question-card label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    .question-card input[type="radio"] {
+      margin-right: 8px;
+    }
+
+    .hint-button, .solution-button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      font-size: 0.9em;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+      margin-right: 10px;
+      display: inline-block;
+    }
+
+    .hint-button:hover, .solution-button:hover {
+      background-color: #217dbb;
+    }
+
+    .hint-content, .solution-content {
+      display: none;
+      background-color: #e8f4f8;
+      border: 1px solid #c8e6f1;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #2c3e50;
+    }
+
+    #submit-quiz-btn, #reset-quiz-btn {
+      background-color: #e67e22;
+      margin-top: 30px;
+    }
+
+    #submit-quiz-btn:hover, #reset-quiz-btn:hover {
+      background-color: #d35400;
+    }
+
+    #score-display {
+      font-size: 1.5em;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #27ae60;
+    }
+
+    .result-question {
+      background-color: #fefefe;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .result-question.correct {
+      border-left: 5px solid #27ae60;
+    }
+
+    .result-question.incorrect {
+      border-left: 5px solid #e74c3c;
+    }
+
+    .result-question .status {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .result-question .your-answer {
+      font-style: italic;
+      color: #555;
+    }
+
+    .result-question .correct-answer {
+      color: #27ae60;
+      font-weight: bold;
+    }
+
+    .solution-content p, .solution-content ul {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1em 0;
+      margin-top: 30px;
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>SAT Math Mastery: Chapters 1-6 Quiz</h1>
+  <p>A 90-minute interactive session covering Exponents, Percents, Growth, Proportion, and Expressions.</p>
+</header>
+
+<main>
+  <section id="review-session">
+    <h2>1. Concept & Formula Review (15 min)</h2>
+    <p>Before the quiz, let's quickly refresh key concepts and formulas. You can expand each section below.</p>
+
+    <div class="concept-section">
+      <h3>Exponents & Radicals</h3>
+      <div class="concept-content">
+        <ul>
+          <li><strong>Laws of Exponents:</strong> \(x^a \cdot x^b = x^{a+b}\), \(\frac{x^a}{x^b} = x^{a-b}\), \((x^a)^b = x^{ab}\), \(x^{-a} = \frac{1}{x^a}\), \(\sqrt{x} = x^{1/2}\).</li>
+          <li><strong>Radicals:</strong> \(\sqrt{ab} = \sqrt{a} \cdot \sqrt{b}\). Example: \(\sqrt{72} = \sqrt{36 \cdot 2} = 6\sqrt{2}\).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concept-section">
+      <h3>Percent, Interest, & Growth</h3>
+      <div class="concept-content">
+        <ul>
+          <li><strong>Percent Change:</strong> \(\frac{(\text{New Value} - \text{Original Value})}{\text{Original Value}} \times 100\%\).</li>
+          <li><strong>Simple Interest:</strong> \(A = P(1 + rt)\).</li>
+          <li><strong>Compound Interest/Exponential Growth:</strong> \(A = P(1 \pm r)^t\).</li>
+          <li><strong>Linear Growth:</strong> \(y = mx + b\). Constant change per unit time.</li>
+          <li><strong>Exponential Growth:</strong> \(y = a(1+r)^x\). Constant percent change per unit time.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concept-section">
+      <h3>Proportion, Rates, & Association</h3>
+      <div class="concept-content">
+        <ul>
+          <li><strong>Proportion:</strong> \(\frac{a}{b} = \frac{c}{d}\) (cross-multiply \(ad=bc\)).</li>
+          <li><strong>Rates:</strong> Rate = \(\frac{\text{Quantity 1}}{\text{Quantity 2}}\) (e.g., miles per hour).</li>
+          <li><strong>Conversion Factors:</strong> Use unit analysis (multiplying by \(\frac{\text{New Unit}}{\text{Old Unit}}\)).</li>
+          <li><strong>Association:</strong> <strong>Positive</strong> (as \(x\) increases, \(y\) increases), <strong>Negative</strong> (as \(x\) increases, \(y\) decreases).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concept-section">
+      <h3>Expressions</h3>
+      <div class="concept-content">
+        <ul>
+          <li><strong>Combining Like Terms:</strong> Add/subtract terms with the exact same variable and exponent.</li>
+          <li><strong>Factoring:</strong> GCF and Difference of Squares (\(a^2 - b^2 = (a-b)(a+b)\)).</li>
+          <li><strong>Fraction Operations:</strong> Need a Common Denominator to add/subtract. Divide by multiplying by the reciprocal.</li>
+        </ul>
+      </div>
+    </div>
+
+    <button id="start-quiz-btn">Start 45-Minute Quiz!</button>
+  </section>
+
+  <section id="quiz-session" style="display:none;">
+    <h2>2. The 20-Question Quiz (45 min)</h2>
+    <div id="quiz-timer">Time Remaining: <span id="timer-display">45:00</span></div>
+    <form id="quiz-form">
+    </form>
+    <button id="submit-quiz-btn">Submit Quiz</button>
+  </section>
+
+  <section id="results-session" style="display:none;">
+    <h2>3. Quiz Results & Review</h2>
+    <div id="score-display"></div>
+    <div id="quiz-review">
+    </div>
+    <button id="reset-quiz-btn">Restart Quiz</button>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; SAT Math Tutor. All rights reserved.</p>
+</footer>
+
+<script>
+  // MathJax Configuration - MUST be before loading MathJax
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)'], ['$', '$']],
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],
+      processEscapes: true
+    },
+    startup: {
+      ready: () => {
+        MathJax.startup.defaultReady();
+        console.log('MathJax loaded successfully!');
+      }
+    }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+
+<script>
+  const quizQuestions = [
+    {
+      id: 1,
+      topic: "Exponent Law",
+      difficulty: "Easy",
+      question: "Simplify \\(\\frac{(x^3)^2}{x^4}\\) for \\(x \\neq 0\\).",
+      options: ["\\(x^1\\)", "\\(x^2\\)", "\\(x^3\\)", "\\(x^4\\)"],
+      answer: "\\(x^2\\)",
+      hint: "Remember the Law of Exponents: \\((x^a)^b = x^{ab}\\) and \\(\\frac{x^a}{x^b} = x^{a-b}\\).",
+      //solution: "Applying \\((x^3)^2 = x^{3 \\cdot 2} = x^6\\). Then \\(\\frac{x^6}{x^4} = x^{6-4} = x^2\\)."
+    },
+    {
+      id: 2,
+      topic: "Combining Terms",
+      difficulty: "Easy",
+      question: "If \\((4x^2 - 3x + 1) - (-x^2 + 2x - 5) = ax^2 + bx + c\\), what is \\(a+b+c\\)?",
+      options: ["0", "2", "5", "6"],
+      answer: "6",
+      hint: "Distribute the negative sign and then combine like terms.",
+      //solution: "\\((4x^2 - 3x + 1) - (-x^2 + 2x - 5) = 4x^2 - 3x + 1 + x^2 - 2x + 5\\) <br> \\(= (4x^2+x^2) + (-3x-2x) + (1+5)\\) <br> \\(= 5x^2 - 5x + 6\\). <br> So \\(a=5, b=-5, c=6\\). <br> \\(a+b+c = 5 + (-5) + 6 = 6\\)."
+    },
+    {
+      id: 3,
+      topic: "Proportion",
+      difficulty: "Easy",
+      question: "If 5 apples cost $2.50, how much do 12 apples cost?",
+      options: ["$5.00", "$5.50", "$6.00", "$7.50"],
+      answer: "$6.00",
+      hint: "Set up a proportion: \\(\\frac{\\text{cost}}{\\text{apples}} = \\frac{\\text{cost}}{\\text{apples}}\\)",
+      //solution: "Let \\(x\\) be the cost of 12 apples. \\(\\frac{2.50}{5} = \\frac{x}{12}\\). Cross-multiply: \\(5x = 2.50 \\times 12 \\Rightarrow x = 6\\). So, 12 apples cost $6.00."
+    },
+    {
+      id: 4,
+      topic: "Rate",
+      difficulty: "Easy",
+      question: "A car travels 180 miles in 3 hours. What is its average speed in miles per hour?",
+      options: ["50 mph", "60 mph", "70 mph", "80 mph"],
+      answer: "60 mph",
+      hint: "Speed = Distance / Time.",
+      //solution: "Speed = \\(\\frac{180}{3} = 60\\) mph."
+    },
+    {
+      id: 5,
+      topic: "Percent Word Prob.",
+      difficulty: "Easy",
+      question: "A shirt is priced at $40. If a 25% discount is applied, what is the new price?",
+      options: ["$25", "$30", "$32", "$35"],
+      answer: "$30",
+      hint: "A 25% discount means you pay 75% of the original price.",
+      //solution: "Discount = \\(0.25 \\times 40 = 10\\). New price = \\(40 - 10 = 30\\)."
+    },
+    {
+      id: 6,
+      topic: "Evaluating Exp.",
+      difficulty: "Medium",
+      question: "If \\(2^{3x} = 64\\), what is the value of \\(x^2\\)?",
+      options: ["1", "2", "4", "9"],
+      answer: "4",
+      hint: "Express 64 as a power of 2.",
+      //solution: "\\(64 = 2^6\\). So \\(2^{3x} = 2^6 \\Rightarrow 3x=6 \\Rightarrow x=2\\). Then \\(x^2=4\\)."
+    },
+    {
+      id: 7,
+      topic: "Exponential vs. Linear",
+      difficulty: "Medium",
+      question: "An investment grows from $1,000 to $1,100 in one year. Is this linear or exponential growth?",
+      options: ["Linear", "Exponential", "Both", "Cannot be determined"],
+      answer: "Cannot be determined",
+      hint: "Need more data points to tell if growth is linear or exponential.",
+      //solution: "With only one year's data, we can't tell - both linear and exponential growth could fit that single increase."
+    },
+    {
+      id: 8,
+      topic: "Simplifying Roots",
+      difficulty: "Medium",
+      question: "If \\(3\\sqrt{k} = \\sqrt{180}\\), what is the value of \\(k\\)?",
+      options: ["5", "10", "20", "30"],
+      answer: "20",
+      hint: "Square both sides or simplify \\(\\sqrt{180}\\) first.",
+      //solution: "\\((3\\sqrt{k})^2 = (\\sqrt{180})^2 \\Rightarrow 9k = 180 \\Rightarrow k = 20\\)."
+    },
+    {
+      id: 9,
+      topic: "Factoring",
+      difficulty: "Medium",
+      question: "Factor the expression \\(9x^2 - 16\\).",
+      options: ["(3x-4)(3x+4)", "(9x-4)(x+4)", "(3x-8)^2", "Cannot be factored"],
+      answer: "(3x-4)(3x+4)",
+      hint: "Use the difference of squares: \\(a^2-b^2=(a-b)(a+b)\\).",
+      //solution: "\\(9x^2 - 16 = (3x)^2 - 4^2 = (3x-4)(3x+4)\\)."
+    },
+    {
+      id: 10,
+      topic: "Percent Change",
+      difficulty: "Medium",
+      question: "The population of a town increased from 8,000 to 9,200. What was the percent increase?",
+      options: ["10%", "12%", "15%", "20%"],
+      answer: "15%",
+      hint: "Use Percent Change = ((New - Old)/Old) × 100%",
+      //solution: "\\((9200 - 8000)/8000 = 0.15 = 15\\%\\)."
+    },
+    {
+      id: 11,
+      topic: "Compound Interest",
+      difficulty: "Medium",
+      question: "\\(P(t) = 5000(1.03)^t\\) models an account. What is the annual interest rate?",
+      options: ["1.03%", "3%", "13%", "103%"],
+      answer: "3%",
+      hint: "Compare \\(A=P(1+r)^t\\) and \\(P(t)=5000(1.03)^t\\).",
+      //solution: "\\(1+r=1.03 \\Rightarrow r=0.03=3\\%\\)."
+    },
+    {
+      id: 12,
+      topic: "Converting Rates",
+      difficulty: "Medium",
+      question: "Convert a speed of 30 ft/s to mph. (1 mile = 5280 ft, 1 hour = 3600 s)",
+      options: ["≈15.6 mph", "≈20.45 mph", "≈25.1 mph", "≈30.5 mph"],
+      answer: "≈20.45 mph",
+      hint: "Use conversion factors.",
+      //solution: "\\(30 \\times \\frac{3600}{5280} = 20.45\\) mph."
+    },
+    {
+      id: 13,
+      topic: "Solving Exp. Eq.",
+      difficulty: "Medium",
+      question: "Solve for \\(x\\): \\(3^{x-2} = \\frac{1}{27}\\).",
+      options: ["-1", "0", "1", "5"],
+      answer: "-1",
+      hint: "Write \\(27\\) as \\(3^3\\) and use reciprocal rule.",
+      //solution: "\\(3^{x-2}=3^{-3}\\Rightarrow x-2=-3\\Rightarrow x=-1\\)."
+    },
+    {
+      id: 14,
+      topic: "Proportion/Rate",
+      difficulty: "Medium",
+      question: "At a constant rate, a machine fills 12 bottles in 8 seconds. How many bottles in 2 minutes?",
+      options: ["150", "160", "180", "240"],
+      answer: "180",
+      hint: "Find rate per second, then multiply by 120 seconds.",
+      //solution: "12/8 = 1.5 per second. In 120 seconds: 1.5×120=180."
+    },
+    {
+      id: 15,
+      topic: "Expressions-Fractions",
+      difficulty: "Medium",
+      question: "Simplify \\(\\frac{x}{x-1} - \\frac{1}{x-1}\\) for \\(x \\neq 1\\).",
+      options: ["\\(x\\)", "\\(x-1\\)", "1", "\\(\\frac{x-1}{x}\\)"],
+      answer: "1",
+      hint: "Combine numerators since denominators are same.",
+      //solution: "\\(\\frac{x - 1}{x - 1} = 1\\) for \\(x \\neq 1\\)."
+    },
+    {
+      id: 16,
+      topic: "Linear Growth",
+      difficulty: "Hard",
+      question: "The cost \\(C=15n+250\\). If production increases by 10 items, how much does cost increase?",
+      options: ["$15", "$150", "$250", "$400"],
+      answer: "$150",
+      hint: "Slope (15) = cost per item.",
+      //solution: "Increase = 15×10 = $150."
+    },
+    {
+      id: 17,
+      topic: "Percent Word Prob.",
+      difficulty: "Hard",
+      question: "After a 20% increase, a price is $180. What was the original price?",
+      options: ["$144", "$150", "$160", "$216"],
+      answer: "$150",
+      hint: "New price = 1.20 × Original.",
+      //solution: "\\(1.2P=180 \\Rightarrow P=150\\)."
+    },
+    {
+      id: 18,
+      topic: "Positive and negative association",
+      difficulty: "Hard",
+      question: "Which scenario represents a negative association?",
+      options: [
+        "The number of hours studied and test score",
+        "The amount of rain and plant height",
+        "The minutes spent watching TV and test score",
+        "The height of a person and math score"
+      ],
+      answer: "The minutes spent watching TV and test score",
+      hint: "Negative means as one increases, the other decreases.",
+      //solution: "More TV time → lower test scores = negative association."
+    },
+    {
+      id: 19,
+      topic: "Expressions-Fractions",
+      difficulty: "Hard",
+      question: "If \\(\\frac{a}{2} + \\frac{b}{3} = 1\\), what is \\(3a+2b\\)?",
+      options: ["1", "5", "6", "Cannot be determined"],
+      answer: "6",
+      hint: "Multiply both sides by 6 to clear denominators.",
+      //solution: "\\(6(\\frac{a}{2} + \\frac{b}{3}) = 6 \\Rightarrow 3a+2b=6\\)."
+    },
+    {
+      id: 20,
+      topic: "Exponents & Radicals",
+      difficulty: "Hard",
+      question: "If \\(x=8\\), what is \\(\\frac{2}{\\sqrt[3]{x^2}}\\)?",
+      options: ["4", "2", "1", "\\(\\frac{1}{2}\\)"],
+      answer: "\\(\\frac{1}{2}\\)",
+      hint: "Simplify \\(\\sqrt[3]{x^2} = x^{2/3}\\).",
+      //solution: "\\(8^{2/3}=(2^3)^{2/3}=2^2=4 \\Rightarrow 2/4=1/2\\)."
+    }
+  ];
+
+  // Timer variables
+  let timerInterval;
+  let timeRemaining = 45 * 60;
+
+  // Function to render math after content changes
+  function renderMath(element) {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise([element || document.body]).catch((err) => console.log('MathJax error:', err));
+    }
+  }
+
+  // Wait for MathJax to be ready
+  window.addEventListener('load', () => {
+    // Toggle concept sections
+    document.querySelectorAll('.concept-section h3').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        const isHidden = content.style.display !== 'block';
+        content.style.display = isHidden ? 'block' : 'none';
+        if (isHidden) {
+          renderMath(content);
+        }
+      });
+    });
+
+    // Start Quiz
+    document.getElementById('start-quiz-btn').addEventListener('click', startQuiz);
+
+    // Initial render
+    renderMath();
+  });
+
+  function startQuiz() {
+    document.getElementById('review-session').style.display = 'none';
+    document.getElementById('quiz-session').style.display = 'block';
+
+    generateQuiz();
+    startTimer();
+
+    setTimeout(() => renderMath(document.getElementById('quiz-form')), 100);
+  }
+
+  function generateQuiz() {
+    const form = document.getElementById('quiz-form');
+    form.innerHTML = '';
+
+    quizQuestions.forEach((q, index) => {
+      const questionDiv = document.createElement('div');
+      questionDiv.className = 'question-card';
+      questionDiv.innerHTML = `
+      <p class="question-text"><strong>Question ${index + 1}:</strong> ${q.question}</p>
+      ${q.options.map((opt, i) => `
+        <label>
+          <input type="radio" name="q${q.id}" value="${opt}">
+          ${opt}
+        </label>
+      `).join('')}
+      <div>
+        <button type="button" class="hint-button" data-id="${q.id}">Show Hint</button>
+      </div>
+      <div id="hint-${q.id}" class="hint-content">${q.hint}</div>
+
+      <div id="reset-quiz-btn-${q.id}" class="reset-button > ${q.question}</div>
+    `;
+      form.appendChild(questionDiv);
+    });
+
+    // Add event listeners for hint/solution buttons
+    document.querySelectorAll('.hint-button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        toggleHint(id);
+      });
+    });
+
+      document.querySelectorAll('.solution-button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        toggleSolution(id);
+      });
+    });
+  }
+
+  function toggleHint(id) {
+    const hint = document.getElementById(`hint-${id}`);
+    const isHidden = hint.style.display !== 'block';
+    hint.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) {
+      renderMath(hint);
+    }
+  }
+
+
+  function toggleSolution(id) {
+    const solution = document.getElementById(`solution-${id}`);
+    const isHidden = solution.style.display !== 'block';
+    solution.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) {
+      renderMath(solution);
+    }
+  }
+
+
+  function startTimer() {
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+      timeRemaining--;
+      updateTimerDisplay();
+
+      if (timeRemaining <= 0) {
+        clearInterval(timerInterval);
+        submitQuiz();
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+    document.getElementById('timer-display').textContent =
+      `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  // Submit Quiz
+  document.getElementById('submit-quiz-btn').addEventListener('click', submitQuiz);
+
+  function submitQuiz() {
+    clearInterval(timerInterval);
+
+    let score = 0;
+    const results = [];
+
+    quizQuestions.forEach(q => {
+      const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+      const userAnswer = selected ? selected.value : null;
+      const isCorrect = userAnswer === q.answer;
+
+      if (isCorrect) score++;
+
+      results.push({
+        question: q,
+        userAnswer: userAnswer,
+        isCorrect: isCorrect
+      });
+    });
+
+    displayResults(score, results);
+  }
+
+  function displayResults(score, results) {
+    document.getElementById('quiz-session').style.display = 'none';
+    document.getElementById('results-session').style.display = 'block';
+
+    const percentage = ((score / quizQuestions.length) * 100).toFixed(1);
+    document.getElementById('score-display').innerHTML =
+      `Your Score: ${score} / ${quizQuestions.length} (${percentage}%)`;
+
+    const reviewDiv = document.getElementById('quiz-review');}
+</script>
+</body>
+</html>
